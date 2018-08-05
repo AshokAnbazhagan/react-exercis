@@ -18,58 +18,65 @@ class App extends Component {
     this.childrenincrementCall = this.childrenincrementCall.bind(this);
     this.childrendecrementCall = this.childrendecrementCall.bind(this);
   }
-  roomincrementCall(){
-    this.setState({roomCount:this.state.roomCount+1},function(){
-      if(this.state.roomCount > this.state.adultCount){
-        this.setState({adultCount:this.state.adultCount+1});
+  roomincrementCall() {
+    this.setState({ roomCount: this.state.roomCount + 1 }, function () {
+      if (this.state.roomCount > this.state.adultCount) {
+        this.setState({ adultCount: this.state.adultCount + 1 });
       }
     });
   }
-  roomdecrementCall(){
-    var childCount,val;
-    this.setState({roomCount:this.state.roomCount-1},function(){
-      if(this.state.adultCount+this.state.childrenCount > this.state.roomCount*4){
-        if(this.state.childrenCount <= 4){
+  roomdecrementCall() {
+    var childCount, val;
+    this.setState({ roomCount: this.state.roomCount - 1 }, function () {
+      if (this.state.adultCount + this.state.childrenCount > this.state.roomCount * 4) {
+        if (this.state.childrenCount <= 4) {
           childCount = this.state.childrenCount - this.state.childrenCount;
-          if(this.state.adultCount-(this.state.roomCount*4)>=4){
+          if (this.state.adultCount - (this.state.roomCount * 4) >= 4) {
             val = 4 - this.state.childrenCount;
           }
-          else{ 
-            val = this.state.adultCount - this.state.roomCount*4;
+          else {
+            val = this.state.adultCount - this.state.roomCount * 4;
           }
-        }else{
-          childCount = this.state.childrenCount - ((this.state.roomCount*4) - this.state.adultCount);
+        } else {
+          childCount = this.state.childrenCount - ((this.state.roomCount * 4) - this.state.adultCount);
           childCount = this.state.childrenCount - childCount;
           val = 0;
         }
-        this.setState({adultCount:this.state.adultCount - val,childrenCount:childCount});
+        this.setState({ adultCount: this.state.adultCount - val, childrenCount: childCount });
       }
     });
   }
-  adultincrementCall(){
-    if(this.state.adultCount+this.state.childrenCount<20){
-      this.setState({adultCount:this.state.adultCount+1},function(){
-        if(this.state.adultCount+this.state.childrenCount>this.state.roomCount*4){
-          this.setState({roomCount:this.state.roomCount+1});
+  adultincrementCall() {
+    if (this.state.adultCount + this.state.childrenCount < 20) {
+      this.setState({ adultCount: this.state.adultCount + 1 }, function () {
+        if (this.state.adultCount + this.state.childrenCount > this.state.roomCount * 4) {
+          this.setState({ roomCount: this.state.roomCount + 1 });
         }
       });
     }
   }
-  adultdecrementCall(){
-      this.setState({adultCount:this.state.adultCount-1},function(){
-        if(this.state.adultCount<this.state.roomCount){
-          this.setState({roomCount:this.state.roomCount-1});
+  adultdecrementCall() {
+    if (this.state.adultCount>this.state.roomCount) {
+      this.setState({ adultCount: this.state.adultCount - 1 }, function () {
+        if (this.state.adultCount + this.state.childrenCount > this.state.roomCount * 4) {
+          this.setState({ roomCount: this.state.roomCount - 1 });
         }
       });
+    }
+    else if(this.state.adultCount === this.state.roomCount){
+      if(this.state.adultCount-1+this.state.childrenCount <= ((this.state.roomCount - 1) * 4)){
+        this.setState({adultCount:this.state.adultCount-1,roomCount:this.state.roomCount-1});
+      }
+    }
   }
-  childrenincrementCall(){
-    if(this.state.roomCount * 4 > this.state.adultCount+this.state.childrenCount)
-      this.setState({childrenCount:this.state.childrenCount+1});
+  childrenincrementCall() {
+    if (this.state.roomCount * 4 > this.state.adultCount + this.state.childrenCount)
+      this.setState({ childrenCount: this.state.childrenCount + 1 });
   }
-  childrendecrementCall(){
-    this.setState({childrenCount:this.state.childrenCount-1},function(){
-      if(this.state.adultCount+this.state.childrenCount<=((this.state.roomCount-1)*4)){
-        this.setState({roomCount:this.state.roomCount-1});
+  childrendecrementCall() {
+    this.setState({ childrenCount: this.state.childrenCount - 1 }, function () {
+      if (this.state.adultCount + this.state.childrenCount <= ((this.state.roomCount - 1) * 4)) {
+        this.setState({ roomCount: this.state.roomCount - 1 });
       }
     });
   }
@@ -94,7 +101,7 @@ class App extends Component {
             <img src={adult} className='grp_img' />
             <p className='pt_list_title'>Adults</p>
             <div className='pt_btn_div'>
-              <button className='pt_dec_btn' onClick={this.adultdecrementCall} disabled={this.state.adultCount+this.state.childrenCount<this.state.roomCount || this.state.adultCount === 1 ? true : false}>-</button>
+              <button className='pt_dec_btn' onClick={this.adultdecrementCall} disabled={this.state.adultCount === 1 ? true : false}>-</button>
               <input type="text" value={this.state.adultCount} className='pt_text' readOnly />
               <button className='pt_inc_btn' onClick={this.adultincrementCall}>+</button>
             </div>
